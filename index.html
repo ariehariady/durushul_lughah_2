@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Madinah Book 2 – Pages 1–50 (Harakat &amp; Translation)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f6f2ea; --paper:#fffdf8; --ink:#1f1b16; --muted:#6b6257; --line:#e6dfd2;
+    --accent:#0f5c4d; --accent-soft:#e3efe9; --spk:#8a4b16; --gloss:#2f5d8a; --ok:#2e8b57; --okt:#1f6b45;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{ --bg:#16140f; --paper:#1f1c16; --ink:#efe8db; --muted:#a69c8d; --line:#363026;
+      --accent:#5fbfa7; --accent-soft:#1d2e29; --spk:#e0a46c; --gloss:#8fb8e0; --ok:#5fbf8a; --okt:#7fd1a3; }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:"Source Sans 3",system-ui,sans-serif;line-height:1.4}
+  header.top{max-width:900px;margin:0 auto;padding:24px 20px 6px;display:flex;flex-wrap:wrap;gap:12px;align-items:end;justify-content:space-between}
+  header.top h1{margin:0;font-size:1.25rem;font-weight:600}
+  header.top p{margin:2px 0 0;color:var(--muted);font-size:.9rem}
+  .btns{display:flex;gap:8px;flex-wrap:wrap}
+  .toggle{border:1px solid var(--line);background:var(--paper);color:var(--ink);padding:7px 13px;border-radius:999px;cursor:pointer;font:inherit;font-size:.85rem}
+  .toggle:hover{border-color:var(--accent)}
+  nav{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(6px);border-bottom:1px solid var(--line)}
+  nav .in{max-width:900px;margin:0 auto;padding:8px 20px;display:flex;gap:6px;overflow-x:auto;scrollbar-width:thin}
+  nav a{flex:none;text-decoration:none;color:var(--ink);border:1px solid var(--line);background:var(--paper);border-radius:10px;padding:5px 11px;font-size:.85rem;line-height:1.2;text-align:center}
+  nav a small{display:block;color:var(--muted);font-size:.7rem}
+  nav a.on{background:var(--accent);border-color:var(--accent);color:#fff}
+  nav a.on small{color:#e8f3ef}
+  main{max-width:900px;margin:0 auto;padding:8px 20px 40px}
+  .page{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:24px 24px 14px;margin:20px 0 26px;position:relative}
+  .pagetag{position:absolute;top:-12px;left:22px;background:var(--accent);color:#fff;font-size:.75rem;font-weight:600;padding:3px 10px;border-radius:999px;letter-spacing:.03em}
+  .pageno{display:flex;justify-content:center;align-items:center;gap:10px;color:var(--muted);font-size:.85rem;margin-top:14px;padding-top:10px;border-top:1px dashed var(--line)}
+  .pageno .n{font-family:Amiri,serif;font-size:1.2rem}
+
+  .ln{padding:12px 0;border-bottom:1px solid var(--line)}
+  .ln:last-of-type{border-bottom:none}
+  .words{direction:rtl;display:flex;flex-wrap:wrap;gap:10px 16px;align-items:flex-start}
+  .w{display:inline-flex;flex-direction:column;align-items:center;text-align:center}
+  .w .a{font-family:Amiri,serif;font-size:1.6rem;line-height:1.9;white-space:nowrap}
+  .w .g{direction:ltr;font-size:.78rem;line-height:1.2;color:var(--gloss);max-width:9.5em;margin-top:-2px}
+  .w.spk .a{color:var(--spk);font-weight:700}
+  .w.spk .g{color:var(--spk);font-weight:600}
+  .w.blank .a{display:inline-block;min-width:80px;border-bottom:1.5px dotted var(--muted);height:2.2rem}
+  .en{direction:ltr;text-align:right;font-size:.95rem;color:var(--muted);margin-top:6px;font-style:italic}
+  .enonly{direction:ltr;text-align:center;color:var(--muted);font-style:italic;padding:30px 0}
+
+  .title .words,.sec .words,.sub .words{justify-content:center}
+  .title .w .a{font-size:2.1rem;font-weight:700}
+  .sec{margin-top:18px}
+  .sec .w .a{font-size:1.8rem;font-weight:700}
+  .sub .w .a{font-size:1.5rem;font-weight:700;color:var(--accent)}
+  .title .en,.sec .en,.sub .en{text-align:center;font-style:normal;font-weight:600}
+  .q{background:var(--accent-soft);border-radius:10px;padding:12px 14px;border-bottom:none;margin:16px 0 4px}
+  .q .w .a{font-weight:700;color:var(--accent)}
+  .q .en{color:var(--ink);font-style:normal;font-weight:600}
+  .item .words,.corr .words{padding-right:14px}
+  .item .en,.corr .en{padding-right:14px}
+  .corr{border-right:3px solid var(--ok);padding-right:8px;margin:6px 0}
+  .vocab .words{gap:14px 26px}
+  .note{font-size:.85rem;color:var(--muted);font-weight:400}
+
+  .ans{margin:10px 14px 2px 0;padding:8px 12px;border-right:3px solid var(--ok);background:rgba(46,139,87,.08);border-radius:8px}
+  .ans-h{direction:ltr;text-align:right;font-size:.75rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ok)}
+  .ans .w .a{font-size:1.45rem;color:var(--okt)}
+  .ans .en{font-style:normal}
+  .mark{display:inline-block;margin-left:6px;font-size:1rem;padding:0 7px;border-radius:6px;color:#fff}
+  .mark.ok{background:#2e8b57} .mark.no{background:#b23b3b}
+
+  body.hide-ans .ans{display:none}
+  body.hide-g .w .g{visibility:hidden}
+  body.hide-en .en{display:none}
+  .pager{display:flex;justify-content:space-between;gap:10px;margin:10px 0 30px}
+  .pager a{color:var(--accent);text-decoration:none;font-weight:600}
+  footer{max-width:900px;margin:0 auto;padding:0 20px 40px;color:var(--muted);font-size:.8rem;text-align:center}
+</style>
+</head>
+<body>
+<header class="top">
+  <div>
+    <h1>Lessons in Arabic Language (Durūs al-Lughah), Book 2</h1>
+    <p>Fully vowelled · English under every word · suggested answers · book pages 1–50</p>
+  </div>
+  <div class="btns">
+    <button class="toggle" id="tg">Hide word meanings</button>
+    <button class="toggle" id="te">Hide sentence translation</button>
+    <button class="toggle" id="ta">Hide answers</button>
+  </div>
+</header>
+<nav><div class="in" id="nav"></div></nav>
+<main id="app"></main>
+<footer>Source: Lessons in Arabic Language, Book 2 — Dr. V. ʿAbdur-Raheem, Islamic University of Madinah. Harakat, translation and suggested answers added for study.</footer>
+
+<script>
+/* Line format: words separated by " / ", each word written as  arabic|english.
+   "@" before a word = speaker name;  "___|" = blank to fill in.
+   Line types (t): title, sec, sub, q, item, corr, vocab, enonly; default = plain line.
+   a: {w, en, mark} = suggested answer.  */
+const LESSONS = [];
+function addLesson(l){ LESSONS.push(l); }
+</script>
+<script src="data/l0.js"></script>
+<script src="data/l1.js"></script>
+<script src="data/l2.js"></script>
+<script src="data/l3.js"></script>
+<script src="data/l4.js"></script>
+<script src="data/l5.js"></script>
+<script src="data/l6.js"></script>
+<script src="data/l7.js"></script>
+<script src="data/l8.js"></script>
+<script src="data/l9.js"></script>
+<script src="data/l10.js"></script>
+<script src="data/l11.js"></script>
+<script src="data/l12.js"></script>
+<script src="data/l13.js"></script>
+<script src="data/l14.js"></script>
+<script src="data/l15.js"></script>
+<script src="data/l16.js"></script>
+<script>
+const AR = n => String(n).replace(/\d/g, d => '٠١٢٣٤٥٦٧٨٩'[d]);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function wordsHTML(str){
+  return str.split(' / ').map(tok=>{
+    let spk = false;
+    if (tok.startsWith('@')) { spk = true; tok = tok.slice(1); }
+    const i = tok.indexOf('|');
+    const a = i<0 ? tok : tok.slice(0,i), g = i<0 ? '' : tok.slice(i+1);
+    if (a === '___') return '<span class="w blank"><span class="a"></span><span class="g">&nbsp;</span></span>';
+    return `<span class="w${spk?' spk':''}"><span class="a">${esc(a)}</span><span class="g">${esc(g)||'&nbsp;'}</span></span>`;
+  }).join('');
+}
+function ansHTML(a){
+  if(!a) return '';
+  const mark = a.mark ? `<span class="mark ${a.mark==='✓'?'ok':'no'}">${a.mark}</span>` : '';
+  return `<div class="ans"><div class="ans-h">Answer ${mark}</div>
+    ${a.w?`<div class="words">${wordsHTML(a.w)}</div>`:''}
+    ${a.en?`<div class="en">${esc(a.en)}</div>`:''}</div>`;
+}
+function lineHTML(l){
+  if (l.t==='enonly') return `<div class="enonly">${esc(l.en)}</div>`;
+  return `<div class="ln ${l.t||''}">
+    ${l.w?`<div class="words">${wordsHTML(l.w)}</div>`:''}
+    ${l.en?`<div class="en">${esc(l.en)}${l.note?` <span class="note">(${esc(l.note)})</span>`:''}</div>`:''}
+    ${ansHTML(l.a)}
+  </div>`;
+}
+function pageHTML(p){
+  return `<section class="page" id="p${p.no}">
+    <span class="pagetag">Page ${p.no}</span>
+    ${p.lines.map(lineHTML).join('')}
+    <div class="pageno"><span class="n">— ${AR(p.no)} —</span><span>page ${p.no}</span></div>
+  </section>`;
+}
+const L = LESSONS.filter(Boolean);
+function range(l){ const n=l.pages.map(p=>p.no); return n.length? (n[0]===n[n.length-1]? 'p. '+n[0] : 'pp. '+n[0]+'–'+n[n.length-1]) : ''; }
+document.getElementById('nav').innerHTML = L.map(l=>`<a href="#${l.id}" data-id="${l.id}">${esc(l.name)}<small>${range(l)}</small></a>`).join('');
+function show(){
+  const h = location.hash.slice(1);
+  let idx = L.findIndex(l=>l.id===h);
+  if (idx<0){ const m=h.match(/^p(\d+)$/); if(m) idx=L.findIndex(l=>l.pages.some(p=>p.no==m[1])); }
+  if (idx<0) idx=0;
+  const l = L[idx];
+  const prev = L[idx-1], next = L[idx+1];
+  document.getElementById('app').innerHTML = l.pages.map(pageHTML).join('') +
+    `<div class="pager"><span>${prev?`<a href="#${prev.id}">← ${esc(prev.name)}</a>`:''}</span><span>${next?`<a href="#${next.id}">${esc(next.name)} →</a>`:''}</span></div>`;
+  document.querySelectorAll('nav a').forEach(a=>a.classList.toggle('on', a.dataset.id===l.id));
+  const on = document.querySelector('nav a.on'); if(on) on.scrollIntoView({block:'nearest',inline:'center'});
+  const m=h.match(/^p(\d+)$/); const el = m && document.getElementById(h);
+  if (el) el.scrollIntoView(); else window.scrollTo(0,0);
+}
+window.addEventListener('hashchange', show); show();
+function tog(id, cls, on, off){
+  const b=document.getElementById(id);
+  b.addEventListener('click',()=>{ const x=document.body.classList.toggle(cls); b.textContent = x?off:on; });
+}
+tog('tg','hide-g','Hide word meanings','Show word meanings');
+tog('te','hide-en','Hide sentence translation','Show sentence translation');
+tog('ta','hide-ans','Hide answers','Show answers');
+</script>
+</body>
+</html>
