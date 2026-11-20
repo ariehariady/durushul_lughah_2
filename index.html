@@ -75,6 +75,17 @@
   body.hide-en .en{display:none}
   .pager{display:flex;justify-content:space-between;gap:10px;margin:10px 0 30px}
   .pager a{color:var(--accent);text-decoration:none;font-weight:600}
+  .bar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:14px 0 4px;flex-wrap:wrap}
+  .bar .pg{border:1px solid var(--line);background:var(--paper);color:var(--accent);padding:8px 16px;border-radius:999px;font:inherit;font-weight:600;cursor:pointer;text-decoration:none}
+  .bar .pg[aria-disabled=true]{opacity:.35;pointer-events:none}
+  .bar .mid{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:.9rem}
+  .bar .go{display:inline-flex;align-items:center;gap:6px}
+  .bar .go input{width:4.5em;font:inherit;padding:6px 8px;border-radius:8px;border:1px solid var(--line);background:var(--paper);color:var(--ink);text-align:center}
+  .bar .go .msg{color:#b23b3b;font-size:.8rem}
+  .bar select{font:inherit;padding:6px 8px;border-radius:8px;border:1px solid var(--line);background:var(--paper);color:var(--ink)}
+  .seg{display:inline-flex;border:1px solid var(--line);border-radius:999px;overflow:hidden}
+  .seg button{border:0;background:var(--paper);color:var(--ink);padding:7px 13px;font:inherit;font-size:.85rem;cursor:pointer}
+  .seg button.on{background:var(--accent);color:#fff}
   footer{max-width:900px;margin:0 auto;padding:0 20px 40px;color:var(--muted);font-size:.8rem;text-align:center}
 </style>
 </head>
@@ -82,9 +93,10 @@
 <header class="top">
   <div>
     <h1>Lessons in Arabic Language (Durūs al-Lughah), Book 2</h1>
-    <p>Fully vowelled · English under every word · suggested answers · book pages 1–50</p>
+    <p>Fully vowelled · English under every word · suggested answers · book pages 5–222</p>
   </div>
   <div class="btns">
+    <span class="seg" role="group" aria-label="View"><button id="vPage">Per page</button><button id="vCont">Continuous</button></span>
     <button class="toggle" id="tg">Hide word meanings</button>
     <button class="toggle" id="te">Hide sentence translation</button>
     <button class="toggle" id="ta">Hide answers</button>
@@ -102,7 +114,6 @@
 const LESSONS = [];
 function addLesson(l){ LESSONS.push(l); }
 </script>
-<script src="data/l0.js"></script>
 <script src="data/l1.js"></script>
 <script src="data/l2.js"></script>
 <script src="data/l3.js"></script>
@@ -148,7 +159,7 @@ function lineHTML(l){
   </div>`;
 }
 function pageHTML(p){
-  return `<section class="page" id="p${p.no}">
+  return `<section class="page" id="pg${p.no}">
     <span class="pagetag">Page ${p.no}</span>
     ${p.lines.map(lineHTML).join('')}
     <div class="pageno"><span class="n">— ${AR(p.no)} —</span><span>page ${p.no}</span></div>
@@ -157,20 +168,69 @@ function pageHTML(p){
 const L = LESSONS.filter(Boolean);
 function range(l){ const n=l.pages.map(p=>p.no); return n.length? (n[0]===n[n.length-1]? 'p. '+n[0] : 'pp. '+n[0]+'–'+n[n.length-1]) : ''; }
 document.getElementById('nav').innerHTML = L.map(l=>`<a href="#${l.id}" data-id="${l.id}">${esc(l.name)}<small>${range(l)}</small></a>`).join('');
-function show(){
+const PAGES = L.flatMap(l=>l.pages.map(p=>({p, l})));
+let MODE = 'page';
+try{ MODE = localStorage.getItem('viewMode') || 'page'; }catch(e){}
+function setMode(m){ MODE=m; try{localStorage.setItem('viewMode',m);}catch(e){}
+  document.getElementById('vPage').classList.toggle('on',m==='page');
+  document.getElementById('vCont').classList.toggle('on',m==='cont'); show(); }
+document.getElementById('vPage').onclick=()=>setMode('page');
+document.getElementById('vCont').onclick=()=>setMode('cont');
+let CUR = 0;  // index into PAGES
+function target(){
   const h = location.hash.slice(1);
-  let idx = L.findIndex(l=>l.id===h);
-  if (idx<0){ const m=h.match(/^p(\d+)$/); if(m) idx=L.findIndex(l=>l.pages.some(p=>p.no==m[1])); }
-  if (idx<0) idx=0;
-  const l = L[idx];
-  const prev = L[idx-1], next = L[idx+1];
-  document.getElementById('app').innerHTML = l.pages.map(pageHTML).join('') +
-    `<div class="pager"><span>${prev?`<a href="#${prev.id}">← ${esc(prev.name)}</a>`:''}</span><span>${next?`<a href="#${next.id}">${esc(next.name)} →</a>`:''}</span></div>`;
+  const m = h.match(/^p(\d+)$/);
+  if (m){ const i=PAGES.findIndex(x=>x.p.no==m[1]); if(i>=0) return {i, page:true}; }
+  const li = L.findIndex(l=>l.id===h);
+  if (li>=0) return {i: PAGES.findIndex(x=>x.l===L[li]), page:false};
+  return {i: CUR, page:false};
+}
+function selHTML(){
+  return `<form class="go" novalidate><label>Page <input type="number" inputmode="numeric" min="${PAGES[0].p.no}" max="${PAGES.at(-1).p.no}" value="${PAGES[CUR].p.no}" aria-label="Type a page number"></label><span class="msg"></span></form>`;
+}
+function barHTML(prevHref, prevTxt, nextHref, nextTxt, mid){
+  return `<div class="bar">
+    <a class="pg" href="${prevHref||'#'}" aria-disabled="${!prevHref}">← ${prevTxt}</a>
+    <span class="mid">${mid}</span>
+    <a class="pg" href="${nextHref||'#'}" aria-disabled="${!nextHref}">${nextTxt} →</a></div>`;
+}
+function show(){
+  const t = target(); CUR = Math.max(0, t.i);
+  const cur = PAGES[CUR], l = cur.l, li = L.indexOf(l);
+  let html;
+  if (MODE==='page'){
+    const pv = PAGES[CUR-1], nx = PAGES[CUR+1];
+    const bar = barHTML(pv&&('#p'+pv.p.no), 'Previous', nx&&('#p'+nx.p.no), 'Next', selHTML()+`<span>${CUR+1} / ${PAGES.length}</span>`);
+    html = bar + pageHTML(cur.p) + bar;
+  } else {
+    const pv = L[li-1], nx = L[li+1];
+    const bar = barHTML(pv&&('#'+pv.id), pv?esc(pv.name):'Previous', nx&&('#'+nx.id), nx?esc(nx.name):'Next', selHTML());
+    html = bar + l.pages.map(pageHTML).join('') + bar;
+  }
+  document.getElementById('app').innerHTML = html;
+  document.querySelectorAll('#app form.go').forEach(f=>{
+    const inp=f.querySelector('input'), msg=f.querySelector('.msg');
+    inp.addEventListener('focus',()=>inp.select());
+    f.addEventListener('submit',e=>{ e.preventDefault();
+      const n=parseInt(inp.value,10), x=PAGES.find(q=>q.p.no===n);
+      if(x){ if(location.hash==='#p'+n) show(); else location.hash='p'+n; }
+      else { msg.textContent = `Page ${isNaN(n)?'':n} not available (${PAGES[0].p.no}–${PAGES.at(-1).p.no})`; inp.select(); }
+    });
+  });
   document.querySelectorAll('nav a').forEach(a=>a.classList.toggle('on', a.dataset.id===l.id));
   const on = document.querySelector('nav a.on'); if(on) on.scrollIntoView({block:'nearest',inline:'center'});
-  const m=h.match(/^p(\d+)$/); const el = m && document.getElementById(h);
+  const el = (MODE==='cont' && t.page) ? document.getElementById("pg"+cur.p.no) : null;
   if (el) el.scrollIntoView(); else window.scrollTo(0,0);
 }
+document.addEventListener('keydown', e=>{
+  if (e.target.closest('select,input,textarea') || e.altKey || e.ctrlKey || e.metaKey) return;
+  if (e.key!=='ArrowLeft' && e.key!=='ArrowRight') return;
+  const d = e.key==='ArrowRight' ? 1 : -1;
+  if (MODE==='page'){ const x=PAGES[CUR+d]; if(x) location.hash='p'+x.p.no; }
+  else { const x=L[L.indexOf(PAGES[CUR].l)+d]; if(x) location.hash=x.id; }
+});
+document.getElementById('vPage').classList.toggle('on',MODE==='page');
+document.getElementById('vCont').classList.toggle('on',MODE==='cont');
 window.addEventListener('hashchange', show); show();
 function tog(id, cls, on, off){
   const b=document.getElementById(id);
